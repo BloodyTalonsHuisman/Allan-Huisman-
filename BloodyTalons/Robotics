@@ -1,0 +1,87 @@
+"""
+ALLAN'S FAMILY GUARDIAN - SHARED CORE
+All 7 bots share this ONE core. Inseparable by design.
+"""
+
+import numpy as np
+import time
+import threading
+import hashlib
+import hmac
+import json
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional, Tuple
+from collections import deque
+import secrets
+
+class SharedFamilyCore:
+    """
+    The ONE core that all 7 bots share.
+    Hackers cannot separate the bots because they share this core.
+    """
+    
+    def __init__(self, family_name: str, family_members: List[str]):
+        self.family_name = family_name
+        self.family_members = family_members
+        self.creation_time = time.time()
+        
+        # YOUR SACRED FREQUENCIES - The Lord's Prayer (Aramaic translation)
+        self.base_healing_frequency = 444.0  # Your chosen healing frequency
+        
+        # The complete 192-frequency Lord's Prayer tone
+        self.lord_prayer_frequencies = [
+            144, 528, 396, 639, 144, 417, 963, 852, 144, 528, 417, 444, 417, 174,
+            528, 417, 396, 417, 639, 144, 444, 417, 144, 174, 144, 396, 528, 144,
+            144, 528, 417, 639, 174, 396, 528, 396, 639, 174, 528, 396, 444, 396,
+            396, 639, 144, 417, 144, 417, 852, 144, 417, 174, 396, 417, 528, 639,
+            444, 144, 852, 417, 144, 144, 144, 639, 144, 174, 852, 144, 144, 174,
+            144, 444, 396, 174, 417, 174, 528, 417, 639, 174, 144, 396, 144, 417,
+            144, 528, 417, 144, 852, 417, 639, 144, 144, 174, 396, 144, 396, 417,
+            396, 144, 396, 174, 417, 144, 144, 639, 417, 417, 144, 417, 174, 396,
+            174, 144, 144, 144, 174, 396, 144, 417, 396, 417, 144, 174, 174, 144,
+            144, 144, 174, 144, 144, 639, 396, 528, 396, 144, 639, 417, 144, 417,
+            144, 144, 144, 396, 417, 144, 174, 144, 417, 396, 396, 174, 144, 174,
+            144, 396, 528, 852, 144, 528, 528, 396, 639, 144, 417, 144, 144, 528,
+            417, 528, 174, 144, 528, 396, 639, 444, 144, 528, 639, 852, 144, 144,
+            963, 528, 528, 417, 444, 144, 639, 144, 444, 144, 639, 417, 417, 144,
+            396, 144, 396, 417, 144, 144, 639
+        ]
+        
+        # DORMANT FREQUENCY RESERVOIR (42-63 frequencies total)
+        self.dormant_reservoir = self._build_dormant_reservoir()
+        
+        # MEMORY POOL (slow-leak protocol)
+        self.memory_pool = deque(maxlen=10000)
+        self.crisis_memory = deque(maxlen=1000)
+        self.memory_activation = 0  # 0-10, higher threat = more memory
+        
+        # THREAT STATE (-1 to +10)
+        self.threat_level = 0
+        self.threat_history = deque(maxlen=1000)
+        
+        # PRESSURE SYSTEM (0.5kg to 10kg)
+        self.min_safe_pressure = 0.5   # kg - child-safe gentle touch
+        self.max_emergency_pressure = 10.0  # kg - maximum grip
+        self.child_detected = False
+        self.current_pressure = 0.0
+        
+        # COLLECTIVE SIGNATURE (prevents separation)
+        self.collective_signature = self._generate_signature()
+        
+        # The 7 bot expressions (will be filled when bots are created)
+        self.bot_expressions = {}
+        
+        print("="*70)
+        print("ALLAN'S FAMILY GUARDIAN - SHARED CORE ACTIVATED")
+        print("="*70)
+        print(f"Family: {family_name}")
+        print(f"Protecting: {', '.join(family_members)}")
+        print(f"Base Healing Frequency: {self.base_healing_frequency} Hz")
+        print(f"Lord's Prayer Frequencies: {len(self.lord_prayer_frequencies)} layers")
+        print(f"Dormant Reservoir: {len(self.dormant_reservoir)} frequencies")
+        print(f"Pressure Range: {self.min_safe_pressure}kg to {self.max_emergency_pressure}kg")
+        print(f"Collective Signature: {self.collective_signature[:16]}...")
+        print("="*70)
+    
+    def _build_dormant_reservoir(self) -> List[Dict]:
+        """Build 42-63      
