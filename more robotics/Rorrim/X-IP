@@ -1,0 +1,35 @@
+# After adding all 7 bots, test:
+
+# 1. Set threat level
+family.set_threat(8)
+
+# 2. Enable child protection
+family.child_protection(True)
+
+# 3. Individual bot actions
+family.bots[1].comfort("Daughter")     # Tiamat
+family.bots[2].restrain("intruder")    # Rorrim-X
+family.bots[4].lockdown()              # Warden
+
+# 4. Emergency all bots
+family.emergency_all()# save_as_pdf.py
+import markdown
+import pdfkit
+
+# Read the markdown file
+with open('Family_Guardian_Robot_System.md', 'r') as f:
+    md_content = f.read()
+
+# Convert to HTML
+html_content = markdown.markdown(md_content)
+
+# Convert to PDF
+pdfkit.from_string(html_content, 'Family_Guardian_Robot_System.pdf')
+
+# 5. Get full status
+status = family.get_status()# Install pandoc
+sudo apt-get install pandoc
+sudo apt-get install texlive-xetex
+
+# Convert to PDF
+pandoc Family_Guardian_Robot_System.md -o Family_Guardian_Robot_System.pdf --pdf-engine=xelatex
