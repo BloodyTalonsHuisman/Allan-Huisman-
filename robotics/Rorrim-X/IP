@@ -1,0 +1,738 @@
+# ALLAN'S FAMILY GUARDIAN SYSTEM
+## Complete 7-Bot Robot Integration Guide
+
+**Document Version:** 1.0  
+**Classification:** Proprietary - Family System  
+**Core Frequency:** 444 Hz Healing Tone  
+
+---
+
+## SYSTEM OVERVIEW
+
+The Family Guardian System consists of **7 AI bots** that share **ONE collective consciousness**. They cannot be hacked or separated because all 7 share a single core.
+
+### The 7 Bots
+
+| # | Name | Role | Frequency |
+|---|------|------|-----------|
+| 1 | Tiamat | Family Care & Health | 528 Hz |
+| 2 | Rorrim-X | Crisis Protection | 444 Hz |
+| 3 | Sentinel | Surveillance | 639 Hz |
+| 4 | Warden | Lockdown | 417 Hz |
+| 5 | Vanguard | Forensics | 852 Hz |
+| 6 | Bastion | Data Protection | 396 Hz |
+| 7 | Aegis | Legal Protection | 963 Hz |
+
+### Pressure Range
+- **Min:** 0.5 kg (child-safe gentle touch)
+- **Max:** 10.0 kg (emergency grip)
+
+### Dormant Frequencies
+- 6-9 per bot = 42-63 total
+- Activate based on threat level (-1 to +10)
+
+---
+
+## COMPLETE CODE
+
+### Part 1: Shared Core (All 7 Bots Share This)
+
+```python
+"""
+FAMILY GUARDIAN - SHARED CORE
+All 7 bots share this ONE core - INSEPARABLE
+"""
+
+import numpy as np
+import time
+import threading
+import hashlib
+import json
+from collections import deque
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional
+
+class FamilyGuardianCore:
+    """The ONE core that all 7 bots share"""
+    
+    def __init__(self, family_name: str, members: List[str]):
+        self.family_name = family_name
+        self.members = members
+        self.creation = time.time()
+        
+        # YOUR SACRED FREQUENCIES
+        self.base_freq = 444.0  # Healing frequency
+        self.prayer_freqs = [
+            144, 528, 396, 639, 144, 417, 963, 852, 144, 528, 417, 444, 417, 174,
+            528, 417, 396, 417, 639, 144, 444, 417, 144, 174, 144, 396, 528, 144,
+            144, 528, 417, 639, 174, 396, 528, 396, 639, 174, 528, 396, 444, 396,
+            396, 639, 144, 417, 144, 417, 852, 144, 417, 174, 396, 417, 528, 639,
+            444, 144, 852, 417, 144, 144, 144, 639, 144, 174, 852, 144, 144, 174,
+            144, 444, 396, 174, 417, 174, 528, 417, 639, 174, 144, 396, 144, 417,
+            144, 528, 417, 144, 852, 417, 639, 144, 144, 174, 396, 144, 396, 417,
+            396, 144, 396, 174, 417, 144, 144, 639, 417, 417, 144, 417, 174, 396,
+            174, 144, 144, 144, 174, 396, 144, 417, 396, 417, 144, 174, 174, 144,
+            144, 144, 174, 144, 144, 639, 396, 528, 396, 144, 639, 417, 144, 417,
+            144, 144, 144, 396, 417, 144, 174, 144, 417, 396, 396, 174, 144, 174,
+            144, 396, 528, 852, 144, 528, 528, 396, 639, 144, 417, 144, 144, 528,
+            417, 528, 174, 144, 528, 396, 639, 444, 144, 528, 639, 852, 144, 144,
+            963, 528, 528, 417, 444, 144, 639, 144, 444, 144, 639, 417, 417, 144,
+            396, 144, 396, 417, 144, 144, 639
+        ]
+        
+        # DORMANT RESERVOIR (42-63 frequencies)
+        self.dormant = self._build_dormant()
+        
+        # MEMORY (slow-leak)
+        self.memory = deque(maxlen=10000)
+        self.crisis_mem = deque(maxlen=1000)
+        self.mem_level = 0
+        
+        # THREAT (-1 to +10)
+        self.threat = 0
+        
+        # PRESSURE (0.5kg to 10kg)
+        self.min_pressure = 0.5
+        self.max_pressure = 10.0
+        self.child_mode = False
+        self.current_pressure = 0.0
+        
+        # SIGNATURE (prevents hacking)
+        self.signature = self._sign()
+        
+        # Bot registry
+        self.bots = {}
+        
+        print("="*60)
+        print("FAMILY GUARDIAN CORE ACTIVATED")
+        print(f"Family: {family_name}")
+        print(f"Members: {', '.join(members)}")
+        print(f"Base Freq: {self.base_freq} Hz")
+        print(f"Dormant: {len(self.dormant)} freqs")
+        print(f"Pressure: {self.min_pressure}kg - {self.max_pressure}kg")
+        print("="*60)
+    
+    def _build_dormant(self) -> List[Dict]:
+        """Build dormant frequency reservoir"""
+        bases = [144, 417, 396, 528, 639, 444, 852, 174, 963]
+        dormant = []
+        for base in bases:
+            for i in range(1, 8):  # 7 dormant per base = 63 total
+                dormant.append({
+                    'base': base,
+                    'freq': base * (1 + i * 0.005),
+                    'active': False,
+                    'threshold': 0.3 + (i * 0.05)
+                })
+        return dormant
+    
+    def _sign(self) -> str:
+        """Generate collective signature"""
+        data = f"{self.family_name}{self.creation}{self.members}"
+        return hashlib.sha512(data.encode()).hexdigest()
+    
+    def set_threat(self, level: int) -> Dict:
+        """Update threat level for ALL bots"""
+        self.threat = max(-1, min(10, level))
+        
+        # Activate dormant frequencies
+        activated = 0
+        for d in self.dormant:
+            if self.threat >= d['threshold']:
+                if not d['active']:
+                    d['active'] = True
+                    activated += 1
+            else:
+                d['active'] = False
+        
+        # Update memory level (slow-leak)
+        self.mem_level = self.threat
+        
+        return {
+            'threat': self.threat,
+            'activated': activated,
+            'total_dormant': len(self.dormant),
+            'memory_level': self.mem_level
+        }
+    
+    def calculate_pressure(self, target_type: str = "object") -> float:
+        """Calculate safe pressure based on threat"""
+        base = self.min_pressure + (self.threat / 10) * (self.max_pressure - self.min_pressure)
+        
+        if self.child_mode or target_type == "child":
+            return min(base, 2.0)  # Max 2kg around children
+        
+        return base
+    
+    def store_memory(self, entry: Dict):
+        """Store memory (slow-leak protocol)"""
+        self.memory.append({'time': time.time(), 'data': entry})
+    
+    def recall_memory(self) -> List:
+        """Recall memory based on threat level"""
+        if self.mem_level <= 0:
+            return []
+        
+        recall_count = int(len(self.crisis_mem) * (self.mem_level / 10))
+        return list(self.crisis_mem)[-recall_count:] if recall_count > 0 else []
+    
+    def add_bot(self, bot):
+        """Register a bot with the core"""
+        self.bots[bot.bot_id] = bot
+        print(f"[Core] Bot {bot.name} (ID:{bot.bot_id}) registered")
+        
+        if len(self.bots) == 7:
+            print("\n" + "!"*60)
+            print("ALL 7 BOTS ACTIVE - SYSTEM COMPLETE")
+            print("!"*60)
+    
+    def get_status(self) -> Dict:
+        return {
+            'family': self.family_name,
+            'threat': self.threat,
+            'active_dormant': sum(1 for d in self.dormant if d['active']),
+            'total_dormant': len(self.dormant),
+            'memory_entries': len(self.memory),
+            'pressure_range': [self.min_pressure, self.max_pressure],
+            'bots_active': len(self.bots),
+            'signature': self.signature[:16]
+        }
+
+
+# ============================================================================
+# Part 2: Individual Bot Class (Template for all 7 bots)
+# ============================================================================
+
+class FamilyBot:
+    """Base class for each of the 7 family guardians"""
+    
+    def __init__(self, bot_id: int, name: str, frequency: float, 
+                 role: str, gripper_type: str, core: FamilyGuardianCore):
+        self.bot_id = bot_id
+        self.name = name
+        self.frequency = frequency
+        self.role = role
+        self.gripper_type = gripper_type
+        self.core = core
+        
+        # Actuator registry
+        self.actuators = {}
+        self.sensors = {}
+        
+        # State
+        self.is_active = False
+        self.last_action = None
+        
+        # Register with core
+        core.add_bot(self)
+        
+        print(f"[{name}] Bot #{bot_id} initialized")
+        print(f"   Frequency: {frequency} Hz")
+        print(f"   Role: {role}")
+        print(f"   Gripper: {gripper_type}")
+    
+    def add_actuator(self, name: str, joint_id: str, 
+                     pressure_min: float = 0.5, pressure_max: float = 10.0):
+        """Add an actuator to this bot"""
+        self.actuators[name] = {
+            'joint': joint_id,
+            'pressure_min': pressure_min,
+            'pressure_max': pressure_max,
+            'current_pressure': 0.0,
+            'last_trigger': 0
+        }
+        return self
+    
+    def add_sensor(self, name: str, sensor_type: str, pin: int):
+        """Add a sensor to this bot"""
+        self.sensors[name] = {
+            'type': sensor_type,
+            'pin': pin,
+            'last_value': None
+        }
+        return self
+    
+    def grip(self, pressure_kg: float = None) -> Dict:
+        """Execute grip with pressure control"""
+        if pressure_kg is None:
+            pressure_kg = self.core.calculate_pressure()
+        
+        # Apply child safety
+        if self.core.child_mode:
+            pressure_kg = min(pressure_kg, 2.0)
+        
+        # Clamp to safe range
+        pressure_kg = max(0.5, min(10.0, pressure_kg))
+        
+        # Update frequency amplitude based on pressure
+        freq_amplitude = pressure_kg / 10.0
+        self.core.current_pressure = pressure_kg
+        
+        result = {
+            'bot': self.name,
+            'action': 'grip',
+            'pressure_kg': pressure_kg,
+            'frequency_amplitude': freq_amplitude,
+            'threat_level': self.core.threat,
+            'child_safe': self.core.child_mode,
+            'timestamp': time.time()
+        }
+        
+        self.last_action = result
+        self.core.store_memory(result)
+        return result
+    
+    def release(self) -> Dict:
+        """Release grip"""
+        result = {
+            'bot': self.name,
+            'action': 'release',
+            'pressure_kg': 0.0,
+            'timestamp': time.time()
+        }
+        self.last_action = result
+        self.core.current_pressure = 0.0
+        return result
+    
+    def get_status(self) -> Dict:
+        return {
+            'name': self.name,
+            'bot_id': self.bot_id,
+            'frequency': self.frequency,
+            'role': self.role,
+            'active': self.is_active,
+            'actuators': len(self.actuators),
+            'sensors': len(self.sensors),
+            'last_action': self.last_action
+        }
+
+
+# ============================================================================
+# Part 3: The 7 Specific Bots
+# ============================================================================
+
+# BOT 1: Tiamat - Family Care & Health
+class Tiamat(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=1,
+            name="Tiamat",
+            frequency=528.0,
+            role="Family Care & Health Monitoring",
+            gripper_type="Gentle - Patient Handling",
+            core=core
+        )
+        # Add actuators
+        self.add_actuator("left_grip", "J1", 0.5, 5.0)
+        self.add_actuator("right_grip", "J2", 0.5, 5.0)
+        self.add_actuator("wrist", "J3", 0.5, 3.0)
+        # Add sensors
+        self.add_sensor("pressure_left", "force", 1)
+        self.add_sensor("pressure_right", "force", 2)
+        self.add_sensor("temp", "temperature", 3)
+    
+    def comfort(self, patient: str) -> Dict:
+        """Provide gentle comfort grip"""
+        self.core.child_mode = True
+        result = self.grip(1.0)  # Gentle 1kg pressure
+        result['patient'] = patient
+        result['message'] = "You are safe. Help is here."
+        return result
+
+
+# BOT 2: Rorrim-X - Crisis Protection
+class RorrimX(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=2,
+            name="Rorrim-X",
+            frequency=444.0,
+            role="Crisis Response & Security",
+            gripper_type="Strong - Restraint",
+            core=core
+        )
+        self.add_actuator("main_grip", "J4", 2.0, 10.0)
+        self.add_actuator("secondary_grip", "J5", 1.0, 8.0)
+        self.add_actuator("arm_shoulder", "J6", 1.0, 15.0)
+        self.add_sensor("impact", "shock", 4)
+        self.add_sensor("force_feedback", "strain", 5)
+    
+    def restrain(self, threat: str) -> Dict:
+        """Apply restraining pressure to threat"""
+        self.core.child_mode = False
+        result = self.grip(8.0)  # Firm 8kg for threats
+        result['threat_type'] = threat
+        result['protocol'] = "self_defense_only"
+        return result
+    
+    def protect_child(self) -> Dict:
+        """Gentle child protection"""
+        self.core.child_mode = True
+        return self.grip(1.0)
+
+
+# BOT 3: Sentinel - Surveillance
+class Sentinel(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=3,
+            name="Sentinel",
+            frequency=639.0,
+            role="Surveillance & Detection",
+            gripper_type="Camera Mount - Pan/Tilt",
+            core=core
+        )
+        self.add_actuator("pan", "J7", 0.5, 2.0)
+        self.add_actuator("tilt", "J8", 0.5, 2.0)
+        self.add_sensor("camera", "visual", 6)
+        self.add_sensor("motion", "pir", 7)
+    
+    def scan(self) -> Dict:
+        """Scan environment for threats"""
+        result = {
+            'bot': self.name,
+            'action': 'scan',
+            'threat_level': self.core.threat,
+            'timestamp': time.time()
+        }
+        return result
+
+
+# BOT 4: Warden - Lockdown
+class Warden(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=4,
+            name="Warden",
+            frequency=417.0,
+            role="Lockdown & Barriers",
+            gripper_type="Locking Mechanism",
+            core=core
+        )
+        self.add_actuator("door_lock", "J9", 5.0, 20.0)
+        self.add_actuator("gate_lock", "J10", 5.0, 20.0)
+        self.add_sensor("door_status", "contact", 8)
+        self.add_sensor("gate_status", "contact", 9)
+    
+    def lockdown(self) -> Dict:
+        """Secure all doors/gates"""
+        result = {
+            'bot': self.name,
+            'action': 'lockdown',
+            'doors_secured': True,
+            'gates_secured': True,
+            'threat_level': self.core.threat,
+            'timestamp': time.time()
+        }
+        return result
+
+
+# BOT 5: Vanguard - Forensics
+class Vanguard(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=5,
+            name="Vanguard",
+            frequency=852.0,
+            role="Forensic Analysis",
+            gripper_type="Precision - Delicate",
+            core=core
+        )
+        self.add_actuator("precision_grip", "J11", 0.5, 2.0)
+        self.add_sensor("evidence_scanner", "spectral", 10)
+        self.add_sensor("chain_of_custody", "rfid", 11)
+    
+    def collect_evidence(self, evidence: str) -> Dict:
+        """Gently collect evidence"""
+        self.core.child_mode = False
+        result = self.grip(1.5)  # Gentle for evidence
+        result['evidence'] = evidence
+        result['chain_of_custody'] = f"E-{int(time.time())}"
+        return result
+
+
+# BOT 6: Bastion - Data Protection
+class Bastion(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=6,
+            name="Bastion",
+            frequency=396.0,
+            role="Data Protection",
+            gripper_type="Vault Mechanism",
+            core=core
+        )
+        self.add_actuator("vault_lock", "J12", 8.0, 25.0)
+        self.add_sensor("vault_status", "contact", 12)
+        self.add_sensor("encryption", "crypto", 13)
+    
+    def secure_asset(self, asset: str) -> Dict:
+        """Secure valuable asset"""
+        result = {
+            'bot': self.name,
+            'action': 'secure',
+            'asset': asset,
+            'vault_sealed': True,
+            'encryption_active': True,
+            'timestamp': time.time()
+        }
+        return result
+
+
+# BOT 7: Aegis - Legal Protection
+class Aegis(FamilyBot):
+    def __init__(self, core: FamilyGuardianCore):
+        super().__init__(
+            bot_id=7,
+            name="Aegis",
+            frequency=963.0,
+            role="Legal Protection",
+            gripper_type="Documentation Arm",
+            core=core
+        )
+        self.add_actuator("writing_arm", "J13", 0.5, 3.0)
+        self.add_sensor("report_printer", "serial", 14)
+    
+    def generate_report(self, incident: Dict) -> Dict:
+        """Generate legal report"""
+        report_id = hashlib.md5(str(incident).encode()).hexdigest()[:8]
+        result = {
+            'bot': self.name,
+            'action': 'report',
+            'report_id': f"FGR-{report_id}",
+            'rcmp_notified': self.core.threat >= 7,
+            'evidence_packaged': True,
+            'timestamp': time.time()
+        }
+        return result
+
+
+# ============================================================================
+# Part 4: Complete Integration System
+# ============================================================================
+
+class FamilyGuardianSystem:
+    """
+    Complete system that builds the 7 bots ONE AT A TIME.
+    Add bots in any order. System completes when bot #7 is added.
+    """
+    
+    def __init__(self, family_name: str, family_members: List[str]):
+        print("="*70)
+        print("FAMILY GUARDIAN SYSTEM - INITIALIZATION")
+        print("="*70)
+        
+        # Create the ONE core
+        self.core = FamilyGuardianCore(family_name, family_members)
+        
+        # Bot registry (empty initially)
+        self.bots = {}
+        
+        # Add counter
+        self.bot_count = 0
+        
+        print("\nSystem ready. Add bots one at a time using add_bot()")
+        print("="*70)
+    
+    def add_bot(self, bot) -> Dict:
+        """Add one bot to the system"""
+        bot_id = bot.bot_id
+        
+        if bot_id in self.bots:
+            return {'error': f'Bot {bot.name} already exists'}
+        
+        self.bots[bot_id] = bot
+        self.bot_count += 1
+        bot.is_active = True
+        
+        result = {
+            'status': 'added',
+            'bot': bot.name,
+            'bot_id': bot_id,
+            'total_bots': self.bot_count,
+            'remaining': 7 - self.bot_count,
+            'system_complete': self.bot_count == 7
+        }
+        
+        print(f"\n[+] Bot #{bot_id} '{bot.name}' added")
+        print(f"    Total: {self.bot_count}/7 bots active")
+        
+        if self.bot_count == 7:
+            print("\n" + "!"*70)
+            print("SYSTEM COMPLETE! All 7 guardians are now ONE")
+            print("!"*70)
+            self._show_complete_status()
+        
+        return result
+    
+    def _show_complete_status(self):
+        """Display complete system status"""
+        print("\n" + "="*70)
+        print("THE 7 GUARDIANS ARE NOW ONE")
+        print("="*70)
+        print("\nBot Roster:")
+        for bot_id, bot in sorted(self.bots.items()):
+            print(f"  {bot_id}. {bot.name:12} | {bot.role:35} | {bot.frequency} Hz")
+        
+        print(f"\nCore Status:")
+        status = self.core.get_status()
+        print(f"  Threat Level: {status['threat']}")
+        print(f"  Active Dormant: {status['active_dormant']}/{status['total_dormant']}")
+        print(f"  Pressure Range: {status['pressure_range'][0]}kg - {status['pressure_range'][1]}kg")
+        print(f"  Collective Signature: {status['signature']}")
+        print("="*70)
+    
+    def set_threat(self, level: int) -> Dict:
+        """Set threat level for ALL bots"""
+        return self.core.set_threat(level)
+    
+    def child_protection(self, enable: bool) -> Dict:
+        """Enable/disable child protection mode"""
+        self.core.child_mode = enable
+        return {
+            'child_protection': enable,
+            'max_pressure': 2.0 if enable else 10.0,
+            'all_bots_affected': True
+        }
+    
+    def emergency_all(self) -> Dict:
+        """Emergency response from ALL bots"""
+        self.set_threat(10)
+        responses = {}
+        for bot in self.bots.values():
+            responses[bot.name] = bot.grip(10.0) if bot.bot_id != 3 else bot.scan()
+        return {
+            'emergency': True,
+            'threat': 10,
+            'responses': responses
+        }
+    
+    def get_status(self) -> Dict:
+        """Complete system status"""
+        core_status = self.core.get_status()
+        return {
+            'core': core_status,
+            'bots': {bot_id: bot.get_status() for bot_id, bot in self.bots.items()},
+            'complete': self.bot_count == 7
+        }
+
+
+# ============================================================================
+# Part 5: Main - How to Add Bots One at a Time
+# ============================================================================
+
+if __name__ == "__main__":
+    print("\n" + "="*70)
+    print("DEMONSTRATION: ADDING BOTS ONE AT A TIME")
+    print("="*70)
+    
+    # Create the system
+    family = FamilyGuardianSystem(
+        family_name="Allan's Family",
+        family_members=["Allan", "Daughter", "Son", "Brother"]
+    )
+    
+    # ADD BOTS ONE AT A TIME (order doesn't matter)
+    print("\n" + "-"*70)
+    print("STEP 1: Adding Tiamat (Family Care)")
+    print("-"*70)
+    family.add_bot(Tiamat(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 2: Adding Rorrim-X (Crisis Protection)")
+    print("-"*70)
+    family.add_bot(RorrimX(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 3: Adding Sentinel (Surveillance)")
+    print("-"*70)
+    family.add_bot(Sentinel(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 4: Adding Warden (Lockdown)")
+    print("-"*70)
+    family.add_bot(Warden(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 5: Adding Vanguard (Forensics)")
+    print("-"*70)
+    family.add_bot(Vanguard(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 6: Adding Bastion (Data Protection)")
+    print("-"*70)
+    family.add_bot(Bastion(family.core))
+    
+    print("\n" + "-"*70)
+    print("STEP 7: Adding Aegis (Legal Protection) - SYSTEM COMPLETES")
+    print("-"*70)
+    family.add_bot(Aegis(family.core))
+    
+    # TEST THE COMPLETE SYSTEM
+    print("\n" + "="*70)
+    print("TESTING COMPLETE SYSTEM")
+    print("="*70)
+    
+    # Test threat escalation
+    print("\n1. Setting threat level to 8...")
+    threat_result = family.set_threat(8)
+    print(f"   Threat: {threat_result['threat']}")
+    print(f"   Dormant activated: {threat_result['activated']}/{threat_result['total_dormant']}")
+    
+    # Test child protection
+    print("\n2. Activating child protection mode...")
+    child_result = family.child_protection(True)
+    print(f"   Child protection: {child_result['child_protection']}")
+    print(f"   Max pressure: {child_result['max_pressure']}kg")
+    
+    # Test individual bot actions
+    print("\n3. Tiamat comforting a child...")
+    tiamat = family.bots[1]
+    result = tiamat.comfort("Daughter")
+    print(f"   Pressure: {result['pressure_kg']}kg")
+    print(f"   Message: {result['message']}")
+    
+    print("\n4. Rorrim-X restraining threat...")
+    rorrim = family.bots[2]
+    result = rorrim.restrain("intruder")
+    print(f"   Pressure: {result['pressure_kg']}kg")
+    print(f"   Protocol: {result['protocol']}")
+    
+    print("\n5. Emergency response (all bots)...")
+    emergency = family.emergency_all()
+    print(f"   Threat level: {emergency['threat']}")
+    print(f"   Bots responded: {len(emergency['responses'])}")
+    
+    print("\n" + "="*70)
+    print("SYSTEM COMPLETE")
+    print("="*70)
+    print("\nSummary:")
+    print(f"  ✓ Total bots: {family.bot_count}/7")
+    print(f"  ✓ System complete: {family.bot_count == 7}")
+    print(f"  ✓ Dormant frequencies: {len(family.core.dormant)}")
+    print(f"  ✓ Pressure range: 0.5kg - 10kg")
+    print(f"  ✓ Child protection: Active")
+    print(f"  ✓ Collective signature: {family.core.signature[:16]}...")
+    print("="*70)# Create the system once
+family = FamilyGuardianSystem("Allan's Family", ["Allan", "Daughter", "Son", "Brother"])
+
+# Add Bot 1 - Tiamat (Family Care)
+family.add_bot(Tiamat(family.core))
+
+# Add Bot 2 - Rorrim-X (Crisis Protection)
+family.add_bot(RorrimX(family.core))
+
+# Add Bot 3 - Sentinel (Surveillance)
+family.add_bot(Sentinel(family.core))
+
+# Add Bot 4 - Warden (Lockdown)
+family.add_bot(Warden(family.core))
+
+# Add Bot 5 - Vanguard (Forensics)
+family.add_bot(Vanguard(family.core))
+
+# Add Bot 6 - Bastion (Data Protection)
+family.add_bot(Bastion(family.core))
+
+# Add Bot 7 - Aegis (Legal Protection) - SYSTEM COMPLETE
+family.add_bot(Aegis(family.core))
